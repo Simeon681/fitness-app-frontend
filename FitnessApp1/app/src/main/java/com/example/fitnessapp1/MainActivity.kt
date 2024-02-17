@@ -1,6 +1,5 @@
 package com.example.fitnessapp1
 
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,7 +16,6 @@ import com.example.fitnessapp1.navigation.AppNavHost
 import com.example.fitnessapp1.theme.LoginTestTheme
 
 class MainActivity : ComponentActivity() {
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

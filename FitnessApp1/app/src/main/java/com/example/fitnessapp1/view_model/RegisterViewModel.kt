@@ -1,12 +1,12 @@
 package com.example.fitnessapp1.view_model
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitnessapp1.resource.request.RegisterUserRequest
 import com.example.fitnessapp1.service.AuthService
+import com.example.fitnessapp1.shared.ActivityLevel
 import com.example.fitnessapp1.shared.Gender
+import com.example.fitnessapp1.shared.WeightGoal
 import com.example.fitnessapp1.state.RegisterState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,43 +25,37 @@ class RegisterViewModel(
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private val _dateOfBirth = MutableStateFlow(LocalDate.parse(""))
-    @RequiresApi(Build.VERSION_CODES.O)
-    val dateOfBirth: StateFlow<LocalDate> = _dateOfBirth
+    private val _dateOfBirth = MutableStateFlow("")
+    val dateOfBirth: StateFlow<String> = _dateOfBirth
 
-    private val _gender = MutableStateFlow(Gender.MALE)
-    val gender: StateFlow<Gender> = _gender
+    private val _gender = MutableStateFlow(null as Gender?)
+    val gender: StateFlow<Gender?> = _gender
 
-    private val _height = MutableStateFlow(0.0f)
-    val height: StateFlow<Float> = _height
+    private val _height = MutableStateFlow(null as Float?)
+    val height: StateFlow<Float?> = _height
 
-    private val _weight = MutableStateFlow(0.0f)
-    val weight: StateFlow<Float> = _weight
+    private val _weight = MutableStateFlow(null as Float?)
+    val weight: StateFlow<Float?> = _weight
 
-    private val _goalCalories = MutableStateFlow(0)
-    val goalCalories: StateFlow<Int> = _goalCalories
+    private val _activityLevel = MutableStateFlow(null as ActivityLevel?)
+    val activityLevel: StateFlow<ActivityLevel?> = _activityLevel
 
-    private val _goalWeight = MutableStateFlow(0.0f)
-    val goalWeight: StateFlow<Float> = _goalWeight
+    private val _weightGoal = MutableStateFlow(null as WeightGoal?)
+    val weightGoal: StateFlow<WeightGoal?> = _weightGoal
 
-    private val _goalSteps = MutableStateFlow(0)
-    val goalSteps: StateFlow<Int> = _goalSteps
-
-    private val _goalWater = MutableStateFlow(0.0f)
-    val goalWater: StateFlow<Float> = _goalWater
+    private val _goalSteps = MutableStateFlow(null as Int?)
+    val goalSteps: StateFlow<Int?> = _goalSteps
 
     fun register(
         username: String,
         password: String,
-        dateOfBirth: LocalDate,
-        gender: Gender,
-        height: Float,
-        weight: Float,
-        goalCalories: Int,
-        goalWeight: Float,
-        goalSteps: Int,
-        goalWater: Float
+        dateOfBirth: String,
+        gender: Gender?,
+        height: Float?,
+        weight: Float?,
+        activityLevel: ActivityLevel?,
+        weightGoal: WeightGoal?,
+        goalSteps: Int?
     ) {
         viewModelScope.launch {
             _registerState.value = RegisterState.Loading
@@ -73,10 +67,9 @@ class RegisterViewModel(
                     gender,
                     height,
                     weight,
-                    goalCalories,
-                    goalWeight,
-                    goalSteps,
-                    goalWater
+                    activityLevel,
+                    weightGoal,
+                    goalSteps
                 )
             )
 
@@ -96,8 +89,7 @@ class RegisterViewModel(
         _password.value = newPassword
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun saveDateOfBirth(newDateOfBirth: LocalDate) {
+    fun saveDateOfBirth(newDateOfBirth: String) {
         _dateOfBirth.value = newDateOfBirth
     }
 
@@ -113,19 +105,15 @@ class RegisterViewModel(
         _weight.value = newWeight
     }
 
-    fun saveGoalCalories(newGoalCalories: Int) {
-        _goalCalories.value = newGoalCalories
+    fun saveActivityLevel(newActivityLevel: ActivityLevel) {
+        _activityLevel.value = newActivityLevel
     }
 
-    fun saveGoalWeight(newGoalWeight: Float) {
-        _goalWeight.value = newGoalWeight
+    fun saveWeightGoal(newWeightGoal: WeightGoal) {
+        _weightGoal.value = newWeightGoal
     }
 
     fun saveGoalSteps(newGoalSteps: Int) {
         _goalSteps.value = newGoalSteps
-    }
-
-    fun saveGoalWater(newGoalWater: Float) {
-        _goalWater.value = newGoalWater
     }
 }

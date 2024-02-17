@@ -17,9 +17,15 @@ import com.example.fitnessapp1.service.serviceImpl.MealStatServiceImpl
 import com.example.fitnessapp1.service.serviceImpl.ProfileServiceImpl
 import com.example.fitnessapp1.view_model.LoginViewModel
 import com.example.fitnessapp1.view_model.RegisterViewModel
+import com.google.gson.Gson
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 val appModule = module {
     single {
@@ -28,53 +34,58 @@ val appModule = module {
         }
     }
 
+    single {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+
+        OkHttpClient().newBuilder()
+            .addInterceptor(interceptor)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .build()
+    }
+    single {
+        Gson()
+    }
+    single {
+        val okHttpClient = get<OkHttpClient>()
+
+        Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl("http://10.0.2.2:8080/")
+            .addConverterFactory(GsonConverterFactory.create(get()))
+            .build()
+    }
+
     single<AuthRepository> {
-        RetrofitInstance.getRetrofitInstance()!!.create(AuthRepository::class.java)
+        get<Retrofit>().create(AuthRepository::class.java)
     }
 
     single<MealRepository> {
-        RetrofitInstance.getRetrofitInstance()!!.create(MealRepository::class.java)
+        get<Retrofit>().create(MealRepository::class.java)
     }
 
     single<MealStatRepository> {
-        RetrofitInstance.getRetrofitInstance()!!.create(MealStatRepository::class.java)
+        get<Retrofit>().create(MealStatRepository::class.java)
     }
 
     single<ActivityStatRepository> {
-        RetrofitInstance.getRetrofitInstance()!!.create(ActivityStatRepository::class.java)
+        get<Retrofit>().create(ActivityStatRepository::class.java)
     }
 
     single<ProfileRepository> {
-        RetrofitInstance.getRetrofitInstance()!!.create(ProfileRepository::class.java)
+        get<Retrofit>().create(ProfileRepository::class.java)
     }
 
+    single<AuthService> { AuthServiceImpl(get(), get()) }
+    single<MealService> { MealServiceImpl(get()) }
+    single<MealStatService> { MealStatServiceImpl(get()) }
+    single<ActivityStatService> { ActivityStatServiceImpl(get()) }
+    single<ProfileService> { ProfileServiceImpl(get()) }
 
-    single<AuthService> {
-        AuthServiceImpl(get())
-    }
+    viewModel { LoginViewModel(get()) }
+    viewModel { RegisterViewModel(get()) }
 
-    single<MealService> {
-        MealServiceImpl(get())
-    }
-
-    single<MealStatService> {
-        MealStatServiceImpl(get())
-    }
-
-    single<ActivityStatService> {
-        ActivityStatServiceImpl(get())
-    }
-
-    single<ProfileService> {
-        ProfileServiceImpl(get())
-    }
-
-
-    viewModel {
-        LoginViewModel(get())
-    }
-
-    viewModel {
-        RegisterViewModel(get())
-    }
+    factory { MainApplication() }
 }

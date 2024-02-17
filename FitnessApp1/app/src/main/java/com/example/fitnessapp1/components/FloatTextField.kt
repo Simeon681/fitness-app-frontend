@@ -3,17 +3,11 @@ package com.example.fitnessapp1.components
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Fastfood
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Scale
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -23,10 +17,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.fitnessapp1.R
 import com.example.fitnessapp1.theme.componentShapes
-import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
-fun NormalTextField(
+fun FloatTextField(
     value: String,
     labelValue: String,
     onChange: (String) -> Unit,
@@ -37,12 +30,15 @@ fun NormalTextField(
             .fillMaxWidth()
             .clip(componentShapes.small),
         label = { Text(text = labelValue) },
-        value = value,
+        value = if (value == "null") "" else value,
         onValueChange = {
-            onChange(it)
+            val filteredText = it.filterIndexed { index, char ->
+                char.isDigit() || (char == '.' && it.indexOf('.') == index)
+            }
+            onChange((filteredText.toFloatOrNull() ?: 0f).toString())
         },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Next
         ),
         singleLine = true,
@@ -50,16 +46,5 @@ fun NormalTextField(
         leadingIcon = {
             Icon(imageVector = painterResource, contentDescription = null)
         }
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun NormalTextFieldPreview() {
-    NormalTextField(
-        value = "",
-        labelValue = stringResource(id = R.string.username),
-        onChange = {},
-        painterResource = Icons.Default.Person
     )
 }

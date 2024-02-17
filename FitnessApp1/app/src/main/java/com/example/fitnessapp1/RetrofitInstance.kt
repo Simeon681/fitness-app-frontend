@@ -15,7 +15,7 @@ object RetrofitInstance {
         .addInterceptor(logging)
         .build()
 
-    fun getRetrofitInstance(): Retrofit? {
+    fun getRetrofitInstance(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

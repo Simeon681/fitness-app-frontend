@@ -20,4 +20,7 @@
     <string name="goal_weight">Goal weight</string>
     <string name="goal_steps">Steps goal</string>
     <string name="goal_water">Goal water(liters)</string>
+    <string name="gender">Gender</string>
+    <string name="activity">Activity</string>
+    <string name="weight_goal">Lose, Maintain or Gain Weight</string>
 </resources>

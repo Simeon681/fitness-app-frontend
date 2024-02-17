@@ -9,12 +9,13 @@ import com.example.fitnessapp1.service.AuthService
 import retrofit2.Response
 
 class AuthServiceImpl(
-    private val authApi: AuthRepository
+    private val authApi: AuthRepository,
+    private val sharedPreferences: SharedPreferencesInstance
 ) : AuthService {
     override suspend fun register(request: RegisterUserRequest): Response<AuthResponse> {
         val response = authApi.register(request)
         if (response.isSuccessful) {
-            SharedPreferencesInstance.saveJwtToken(response.body()?.token!!)
+            sharedPreferences.saveJwtToken(response.body()!!.token)
         }
 
         return response
@@ -23,7 +24,7 @@ class AuthServiceImpl(
     override suspend fun login(request: AuthRequest): Response<AuthResponse> {
         val response = authApi.login(request)
         if (response.isSuccessful) {
-            SharedPreferencesInstance.saveJwtToken(response.body()?.token!!)
+            sharedPreferences.saveJwtToken(response.body()!!.token)
         }
 
         return response

@@ -11,7 +11,7 @@ object SharedPreferencesInstance {
     }
 
     fun saveJwtToken(token: String) {
-        return sharedPreferences
+        sharedPreferences
             .edit()
             .putString("jwt_token", token)
             .apply()

@@ -31,7 +31,8 @@ import com.example.fitnessapp1.theme.componentShapes
 fun PasswordTextField(
     labelValue: String,
     onChange: (String) -> Unit,
-    painterResource: ImageVector
+    painterResource: ImageVector,
+    value: String
 ) {
     var passwordVisible by remember {
         mutableStateOf(false)
@@ -52,7 +53,7 @@ fun PasswordTextField(
         ),
         singleLine = true,
         maxLines = 1,
-        value = textValue,
+        value = value,
         onValueChange = {
             textValue = it
             onChange(it)
@@ -91,6 +92,7 @@ fun PasswordTextFieldPreview() {
     PasswordTextField(
         labelValue = "Password",
         onChange = {},
-        painterResource = Icons.Default.Lock
+        painterResource = Icons.Default.Lock,
+        value = ""
     )
 }

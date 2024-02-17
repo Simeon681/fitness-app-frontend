@@ -16,10 +16,10 @@ class LoginViewModel(
     val loginState:StateFlow<LoginState> = _loginState
 
     private val _username = MutableStateFlow("")
-    val username:StateFlow<String> = _username
+    val username: StateFlow<String> = _username
 
     private val _password = MutableStateFlow("")
-    val password:StateFlow<String> = _password
+    val password: StateFlow<String> = _password
 
     fun login(username: String, password: String) {
         viewModelScope.launch {
