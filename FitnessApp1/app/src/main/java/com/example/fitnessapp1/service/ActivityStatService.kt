@@ -5,10 +5,9 @@ import com.example.fitnessapp1.resource.response.ActivityStatResponse
 import retrofit2.Response
 
 interface ActivityStatService {
-    suspend fun create(request: ActivityStatRequest, id: Long): Response<ActivityStatResponse>
+    suspend fun create(request: ActivityStatRequest): Response<ActivityStatResponse>
+    suspend fun getActivityStat(): Response<ActivityStatResponse>
     suspend fun update(
-        request: ActivityStatRequest,
-        userId:Long,
-        id: Long
+        request: ActivityStatRequest
     ): Response<ActivityStatResponse>
 }

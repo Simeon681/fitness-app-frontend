@@ -16,7 +16,7 @@ import com.example.fitnessapp1.R
 import com.example.fitnessapp1.theme.TextColor
 
 @Composable
-fun HeadingText(value: String) {
+fun HeadingText(value: String, textAlign: TextAlign?) {
     Text (
         text = value,
         modifier = Modifier
@@ -28,12 +28,12 @@ fun HeadingText(value: String) {
             fontStyle = FontStyle.Normal
         ),
         color = TextColor,
-        textAlign = TextAlign.Center
+        textAlign = textAlign
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun HeadingTextPreview() {
-    HeadingText(value = stringResource(id = R.string.hello))
+    HeadingText(value = stringResource(id = R.string.hello), null)
 }

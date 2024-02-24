@@ -38,10 +38,6 @@ fun PasswordTextField(
         mutableStateOf(false)
     }
 
-    var textValue by remember {
-        mutableStateOf("")
-    }
-
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
@@ -55,7 +51,6 @@ fun PasswordTextField(
         maxLines = 1,
         value = value,
         onValueChange = {
-            textValue = it
             onChange(it)
         },
         leadingIcon = {

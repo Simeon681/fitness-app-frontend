@@ -1,86 +1,84 @@
 package com.example.fitnessapp1.components
 
-import android.system.Os.remove
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.RestoreFromTrash
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Card
 import androidx.compose.material3.DockedSearchBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterEnd
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
-import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontVariation.weight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.fitnessapp1.R
+import com.example.fitnessapp1.resource.response.MealResponse
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NormalSearchBar(
-    modifier: Modifier
+    query: String,
+    onQueryChange: (String) -> Unit,
+    active: Boolean,
+    onActiveChange: (Boolean) -> Unit,
+    onSearchButtonClick: () -> Unit
 ) {
-    var text by remember { mutableStateOf("") }
-    var active by remember { mutableStateOf(false) }
     val items = remember {
         mutableStateListOf(
             null as String?,
         ).apply {
-                remove(null)
-            }
+            remove(null)
+        }
     }
 
     DockedSearchBar(
-        modifier = modifier,
+        modifier = Modifier.fillMaxWidth(),
         leadingIcon = {
             Icon(imageVector = Icons.Default.Search, contentDescription = null)
         },
-        query = text,
+        query = query,
         placeholder = {
-            Text(text = "Search for a food...")
+            Text(text = stringResource(id = R.string.search))
         },
         onQueryChange = {
-            text = it
+            onQueryChange(it)
         },
         onSearch = {
-            if (!items.contains(text)) {
-                items.add(0, text)
+            if (!items.contains(query)) {
+                items.add(0, query)
             }
 
-            active = !active
+            onActiveChange(!active)
+            onSearchButtonClick()
         },
         active = active,
         onActiveChange = {
-            active = it
+            onActiveChange(it)
         },
         trailingIcon = {
             if (active) {
                 IconButton(onClick = {
-                    if (text.isEmpty()) {
-                        active = false
+                    if (query.isEmpty()) {
+                        onActiveChange(false)
                     } else {
-                        text = ""
+                        onQueryChange("")
                     }
                 }) {
                     Icon(imageVector = Icons.Default.Close, contentDescription = null)
@@ -113,8 +111,54 @@ fun NormalSearchBar(
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun NormalSearchBarPreview() {
-    NormalSearchBar(modifier = Modifier.fillMaxWidth())
+fun MealItems(
+    active: Boolean,
+    meals: List<MealResponse>?,
+    onMealIdChange: (Long) -> Unit,
+    onClick: (Any?) -> Unit
+) {
+    if (meals != null) {
+        if (!active && meals.isNotEmpty()) {
+            meals.forEach {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(8.dp),
+                    ) {
+                        Column {
+                            Text(
+                                text = it.name,
+                                fontSize = 20.sp,
+                                fontWeight = Bold,
+                            )
+                            Text(
+                                text = "${it.calories} kcal, " +
+                                        "${it.protein} g protein, " +
+                                        "${it.carbs} g carbs, " +
+                                        "${it.fat} g fat",
+                                fontSize = 12.sp
+                            )
+                        }
+
+                        SmallFloatingActionButton(
+                            shape = CircleShape,
+                            onClick = {
+                                onMealIdChange(it.id)
+                                onClick(it.id)
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = null
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

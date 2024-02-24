@@ -11,7 +11,6 @@ import com.example.fitnessapp1.state.RegisterState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 
 class RegisterViewModel(
     private val authService: AuthService
@@ -81,39 +80,39 @@ class RegisterViewModel(
         }
     }
 
-    fun saveUsername(newUsername: String) {
+    fun setUsername(newUsername: String) {
         _username.value = newUsername
     }
 
-    fun savePassword(newPassword: String) {
+    fun setPassword(newPassword: String) {
         _password.value = newPassword
     }
 
-    fun saveDateOfBirth(newDateOfBirth: String) {
+    fun setDateOfBirth(newDateOfBirth: String) {
         _dateOfBirth.value = newDateOfBirth
     }
 
-    fun saveGender(newGender: Gender) {
+    fun setGender(newGender: Gender) {
         _gender.value = newGender
     }
 
-    fun saveHeight(newHeight: Float) {
+    fun setHeight(newHeight: Float) {
         _height.value = newHeight
     }
 
-    fun saveWeight(newWeight: Float) {
+    fun setWeight(newWeight: Float) {
         _weight.value = newWeight
     }
 
-    fun saveActivityLevel(newActivityLevel: ActivityLevel) {
+    fun setActivityLevel(newActivityLevel: ActivityLevel) {
         _activityLevel.value = newActivityLevel
     }
 
-    fun saveWeightGoal(newWeightGoal: WeightGoal) {
+    fun setWeightGoal(newWeightGoal: WeightGoal) {
         _weightGoal.value = newWeightGoal
     }
 
-    fun saveGoalSteps(newGoalSteps: Int) {
+    fun setGoalSteps(newGoalSteps: Int) {
         _goalSteps.value = newGoalSteps
     }
 }

@@ -1,4 +1,4 @@
-package com.example.fitnessapp1.service.serviceImpl
+package com.example.fitnessapp1.service.service_impl
 
 import com.example.fitnessapp1.repository.ActivityStatRepository
 import com.example.fitnessapp1.resource.request.ActivityStatRequest
@@ -7,20 +7,21 @@ import com.example.fitnessapp1.service.ActivityStatService
 import retrofit2.Response
 
 class ActivityStatServiceImpl(
-    private val activityStatApi: ActivityStatRepository
+    private val activityStatRepository: ActivityStatRepository
 ) : ActivityStatService {
     override suspend fun create(
         request: ActivityStatRequest,
-        id: Long
     ): Response<ActivityStatResponse> {
-        return activityStatApi.createActivityStat(request, id)
+        return activityStatRepository.createActivityStat(request)
+    }
+
+    override suspend fun getActivityStat(): Response<ActivityStatResponse> {
+        return activityStatRepository.getActivityStat()
     }
 
     override suspend fun update(
-        request: ActivityStatRequest,
-        userId: Long,
-        id: Long
+        request: ActivityStatRequest
     ): Response<ActivityStatResponse> {
-        return activityStatApi.updateActivityStat(request, userId, id)
+        return activityStatRepository.updateActivityStat(request)
     }
 }

@@ -21,11 +21,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.fitnessapp1.R
 import com.example.fitnessapp1.shared.ActivityLevel
-import com.example.fitnessapp1.shared.Gender
 import com.example.fitnessapp1.theme.componentShapes
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,6 +64,7 @@ fun ActivityLevelTextField(
             }
         )
         ExposedDropdownMenu(
+            modifier = Modifier.fillMaxWidth(),
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {

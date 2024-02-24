@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
@@ -14,8 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -29,8 +27,6 @@ import com.example.fitnessapp1.components.NormalTextField
 import com.example.fitnessapp1.components.PasswordTextField
 import com.example.fitnessapp1.components.UnderlinedClickableText
 
-
-// TODO: add password visibility
 @Composable
 fun LoginScreen(
     navController: NavHostController?,
@@ -38,7 +34,7 @@ fun LoginScreen(
     onUsernameChange: (String) -> Unit,
     password: String,
     onPasswordChange: (String) -> Unit,
-    onButtonClick: () -> Unit
+    onButtonClick: () -> Unit,
 ) {
     Surface(
         modifier = Modifier
@@ -48,24 +44,20 @@ fun LoginScreen(
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             NormalText(value = stringResource(id = R.string.login))
-            HeadingText(value = stringResource(id = R.string.welcome))
+            HeadingText(value = stringResource(id = R.string.welcome), textAlign = TextAlign.Center)
 
             Spacer(modifier = Modifier.height(20.dp))
 
             NormalTextField(
                 value = username,
                 labelValue = stringResource(id = R.string.username),
-                onChange = {
-                    onUsernameChange(it)
-                },
+                onChange = onUsernameChange,
                 painterResource = Icons.Default.Person
             )
 
             PasswordTextField(
                 labelValue = stringResource(id = R.string.password),
-                onChange = {
-                    onPasswordChange(it)
-                },
+                onChange = onPasswordChange,
                 painterResource = Icons.Default.Lock,
                 value = password
             )
@@ -107,5 +99,12 @@ fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(null, "", {}, "", {}, {})
+    LoginScreen(
+        null,
+        "",
+        {},
+        "",
+        {},
+        {},
+    )
 }

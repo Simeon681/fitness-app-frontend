@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FitnessCenter
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Scale
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -25,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.fitnessapp1.R
-import com.example.fitnessapp1.shared.Gender
 import com.example.fitnessapp1.shared.WeightGoal
 import com.example.fitnessapp1.theme.componentShapes
 
@@ -61,6 +58,7 @@ fun WeightGoalTextField(
             }
         )
         ExposedDropdownMenu(
+            modifier = Modifier.fillMaxWidth(),
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {

@@ -28,7 +28,7 @@ import com.example.fitnessapp1.theme.componentShapes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EnumTextField(
+fun GenderTextField(
     value: Gender?,
     onChange: (Gender) -> Unit,
     painterResource: ImageVector
@@ -58,6 +58,7 @@ fun EnumTextField(
             }
         )
         ExposedDropdownMenu(
+            modifier = Modifier.fillMaxWidth(),
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
@@ -76,8 +77,8 @@ fun EnumTextField(
 
 @Preview
 @Composable
-fun EnumTextFieldPreview() {
-    EnumTextField(
+fun GenderTextFieldPreview() {
+    GenderTextField(
         value = null as Gender?,
         onChange = {},
         painterResource = Icons.Default.Person

@@ -1,5 +1,6 @@
 package com.example.fitnessapp1
 
+import com.example.fitnessapp1.RetrofitHost.STEVEN
 import com.example.fitnessapp1.repository.ActivityStatRepository
 import com.example.fitnessapp1.repository.AuthRepository
 import com.example.fitnessapp1.repository.MealRepository
@@ -10,12 +11,16 @@ import com.example.fitnessapp1.service.AuthService
 import com.example.fitnessapp1.service.MealService
 import com.example.fitnessapp1.service.MealStatService
 import com.example.fitnessapp1.service.ProfileService
-import com.example.fitnessapp1.service.serviceImpl.ActivityStatServiceImpl
-import com.example.fitnessapp1.service.serviceImpl.AuthServiceImpl
-import com.example.fitnessapp1.service.serviceImpl.MealServiceImpl
-import com.example.fitnessapp1.service.serviceImpl.MealStatServiceImpl
-import com.example.fitnessapp1.service.serviceImpl.ProfileServiceImpl
+import com.example.fitnessapp1.service.service_impl.ActivityStatServiceImpl
+import com.example.fitnessapp1.service.service_impl.AuthServiceImpl
+import com.example.fitnessapp1.service.service_impl.MealServiceImpl
+import com.example.fitnessapp1.service.service_impl.MealStatServiceImpl
+import com.example.fitnessapp1.service.service_impl.ProfileServiceImpl
+import com.example.fitnessapp1.view_model.ActivityStatViewModel
 import com.example.fitnessapp1.view_model.LoginViewModel
+import com.example.fitnessapp1.view_model.MealStatViewModel
+import com.example.fitnessapp1.view_model.MealViewModel
+import com.example.fitnessapp1.view_model.ProfileViewModel
 import com.example.fitnessapp1.view_model.RegisterViewModel
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
@@ -39,6 +44,7 @@ val appModule = module {
         interceptor.level = HttpLoggingInterceptor.Level.BODY
 
         OkHttpClient().newBuilder()
+            .addInterceptor(TokenInterceptor(get()))
             .addInterceptor(interceptor)
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
@@ -53,7 +59,7 @@ val appModule = module {
 
         Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl("http://10.0.2.2:8080/")
+            .baseUrl(STEVEN)
             .addConverterFactory(GsonConverterFactory.create(get()))
             .build()
     }
@@ -86,6 +92,10 @@ val appModule = module {
 
     viewModel { LoginViewModel(get()) }
     viewModel { RegisterViewModel(get()) }
+    viewModel { ProfileViewModel(get()) }
+    viewModel { MealViewModel(get()) }
+    viewModel { MealStatViewModel(get()) }
+    viewModel { ActivityStatViewModel(get()) }
 
     factory { MainApplication() }
 }
