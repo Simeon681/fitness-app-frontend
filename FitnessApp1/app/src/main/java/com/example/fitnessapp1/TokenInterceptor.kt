@@ -9,26 +9,16 @@ class TokenInterceptor(
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        val isLoginOrRegistration = isLoginOrRegistrationRequest(request.url.toString())
-
-        val token: String? = if (!isLoginOrRegistration) {
-            sharedPreferences.getJwtToken()
-        } else {
-            null
-        }
+        val token: String? = sharedPreferences.getJwtToken()
 
         val modifiedRequest: Request = request.newBuilder()
             .apply {
-                token?.let { header("Authorization", "Bearer $it") }
+                token?.let {
+                    header("Authorization", "Bearer $it")
+                }
             }
             .build()
 
         return chain.proceed(modifiedRequest)
     }
-
-    private fun isLoginOrRegistrationRequest(requestUrl: String): Boolean {
-        return requestUrl.contains("/api/v1/auth/register")
-                || requestUrl.contains("/api/v1/auth/login")
-    }
-
 }

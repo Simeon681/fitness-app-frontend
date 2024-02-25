@@ -25,12 +25,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.fitnessapp1.R
+import com.example.fitnessapp1.ScheduledTask
+import com.example.fitnessapp1.SharedPreferencesInstance
 import com.example.fitnessapp1.components.ActivityCard
 import com.example.fitnessapp1.components.CaloriesCard
 import com.example.fitnessapp1.components.HeadingText
 import com.example.fitnessapp1.resource.response.ActivityStatResponse
 import com.example.fitnessapp1.resource.response.ProfileResponse
-import com.example.fitnessapp1.shared.MealType
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -44,17 +45,30 @@ fun MainScreen(
     steps: Int?,
     onStepsChange: (Int) -> Unit,
     onWaterChange: (Float) -> Unit,
-    updateActivityStat: () -> Unit,
-    mealId: Long?,
-    onMealIdChange: (Long) -> Unit,
-    type: MealType?,
-    onMealTypeChange: (MealType) -> Unit,
-    onMealStatButtonClick: () -> Unit
+    updateActivityStat: () -> Unit
 ) {
+    val sharedPreferencesInstance = SharedPreferencesInstance
+    val scheduler = ScheduledTask
+
     LaunchedEffect(key1 = true) {
         onGetProfile()
         onGetActivityStat()
+        onStepsChange(sharedPreferencesInstance.getSteps())
+
+        scheduler.performTask(
+            taskToRun = { sharedPreferencesInstance.saveSteps(0) },
+            hour = 0,
+            minute = 0,
+            second = 0
+        )
     }
+
+    scheduler.performTask(
+        taskToRun = { updateActivityStat() },
+        hour = 23,
+        minute = 59,
+        second = 59
+    )
 
     Surface(
         modifier = Modifier
@@ -86,6 +100,7 @@ fun MainScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     ActivityCard(
+                        steps = steps,
                         profile = profile,
                         activityStat = activityStat,
                         onWaterChange = onWaterChange,
@@ -146,11 +161,6 @@ fun MainScreenPreview() {
         steps = 0,
         onStepsChange = {},
         onWaterChange = {},
-        updateActivityStat = {},
-        mealId = null,
-        onMealIdChange = {},
-        type = null,
-        onMealTypeChange = {},
-        onMealStatButtonClick = {}
+        updateActivityStat = {}
     )
 }

@@ -134,7 +134,7 @@ fun CaloriesCard(
                         initialValue = activityStat?.carbs ?: 0f,
                         primaryColor = Color.Green,
                         secondaryColor = Color.LightGray,
-                        maxValue = profile?.goalCarbs ?: 0f,
+                        maxValue = profile?.goalCarbs ?: 100f,
                         length = 110f
                     )
 
@@ -166,7 +166,7 @@ fun CaloriesCard(
                         initialValue = activityStat?.protein ?: 0f,
                         primaryColor = Color.Green,
                         secondaryColor = Color.LightGray,
-                        maxValue = profile?.goalProtein ?: 0f,
+                        maxValue = profile?.goalProtein ?: 100f,
                         length = 110f
                     )
 
@@ -198,7 +198,7 @@ fun CaloriesCard(
                         initialValue = activityStat?.fat ?: 0f,
                         primaryColor = Color.Green,
                         secondaryColor = Color.LightGray,
-                        maxValue = profile?.goalFat ?: 0f,
+                        maxValue = profile?.goalFat ?: 100f,
                         length = 110f
                     )
 

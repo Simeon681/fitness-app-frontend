@@ -24,6 +24,7 @@ import com.example.fitnessapp1.resource.response.ProfileResponse
 
 @Composable
 fun ActivityCard(
+    steps: Int?,
     profile: ProfileResponse?,
     activityStat: ActivityStatResponse,
     onWaterChange: (Float) -> Unit,
@@ -49,10 +50,10 @@ fun ActivityCard(
                 CustomCircularProgressIndicator(
                     modifier = Modifier
                         .size(160.dp),
-                    initialValue = activityStat.steps.toFloat(),
+                    initialValue = steps?.toFloat() ?: 0f,
                     primaryColor = Color.Green,
                     secondaryColor = Color.LightGray,
-                    maxValue = profile?.goalSteps?.toFloat() ?: 0f,
+                    maxValue = profile?.goalSteps?.toFloat() ?: 100f,
                     circularRadius = 200f,
                     isCircle = true,
                     text = stringResource(id = R.string.steps),

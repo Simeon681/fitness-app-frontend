@@ -1,23 +1,32 @@
 package com.example.fitnessapp1
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.fitnessapp1.navigation.AppNavHost
-import com.example.fitnessapp1.theme.LoginTestTheme
+import com.example.fitnessapp1.step_counter.StepCounter
 import com.example.fitnessapp1.ui.theme.FitnessApp1Theme
 
 class MainActivity : ComponentActivity() {
+    private var sharedPreferencesInstance = SharedPreferencesInstance
+    private lateinit var stepCounter: StepCounter
+
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        sharedPreferencesInstance.initSharedPreferences(this)
+        stepCounter = StepCounter(this)
+
         setContent {
             FitnessApp1Theme {
                 Surface(
@@ -28,21 +37,45 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        if (stepCounter.isPermissionGranted()) {
+            stepCounter.requestPermission()
+        }
+
+        sharedPreferencesInstance.saveSteps(sharedPreferencesInstance.getSteps())
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+    override fun onResume() {
+        super.onResume()
+        stepCounter.registerListener()
+    }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    LoginTestTheme {
-        Greeting("Android")
+    override fun onPause() {
+        super.onPause()
+        stepCounter.unregisterListener()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == stepCounter.MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION) {
+            if ((grantResults.isNotEmpty() && grantResults[0]
+                        == PackageManager.PERMISSION_GRANTED)) {
+                Toast.makeText(
+                    this,
+                    "Activity Recognition permission granted",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Activity Recognition permission denied",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 }

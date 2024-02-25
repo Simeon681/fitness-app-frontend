@@ -35,13 +35,10 @@ fun AppNavHost(
         composable(NavigationItem.Main.route) {
             val profileViewModel = getViewModel<ProfileViewModel>()
             val activityStatViewModel = getViewModel<ActivityStatViewModel>()
-            val mealStatViewModel = getViewModel<MealStatViewModel>()
             val profile by profileViewModel.profile.collectAsState()
             val activityStat by activityStatViewModel.activityStat.collectAsState()
             val steps by activityStatViewModel.steps.collectAsState()
             val water by activityStatViewModel.water.collectAsState()
-            val mealId by mealStatViewModel.mealId.collectAsState()
-            val type by mealStatViewModel.type.collectAsState()
             MainScreen(
                 navController,
                 profile = profile,
@@ -54,13 +51,6 @@ fun AppNavHost(
                 updateActivityStat = {
                     activityStatViewModel
                         .updateActivityStat(steps, water)
-                },
-                mealId = mealId,
-                onMealIdChange = { mealStatViewModel.setMealId(it) },
-                type = type,
-                onMealTypeChange = { mealStatViewModel.setMealType(it) },
-                onMealStatButtonClick = {
-                    //mealStatViewModel.createMealStat(mealId, portion, mealType)
                 }
             )
         }
