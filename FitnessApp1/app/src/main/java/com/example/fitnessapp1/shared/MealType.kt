@@ -1,6 +1,6 @@
 package com.example.fitnessapp1.shared
 
-enum class MealType(private val displayName: String) {
+enum class MealType(val displayName: String) {
     BREAKFAST("Breakfast"),
     LUNCH("Lunch"),
     DINNER("Dinner"),

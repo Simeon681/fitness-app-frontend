@@ -1,4 +1,4 @@
-package com.example.fitnessapp1.service.serviceImpl
+package com.example.fitnessapp1.service.service_impl
 
 import com.example.fitnessapp1.repository.MealStatRepository
 import com.example.fitnessapp1.resource.request.MealStatRequest
@@ -7,17 +7,16 @@ import com.example.fitnessapp1.service.MealStatService
 import retrofit2.Response
 
 class MealStatServiceImpl(
-    private val mealStatApi: MealStatRepository
+    private val mealStatRepository: MealStatRepository
 ) : MealStatService {
     override suspend fun createMealStat(
         request: MealStatRequest,
-        id: Long,
-        mealId: Long
+        mealId: Long?
     ): Response<MealStatResponse> {
-        return mealStatApi.createMealStat(request, id, mealId)
+        return mealStatRepository.createMealStat(request, mealId)
     }
 
     override suspend fun deleteMealStat(id: Long): Response<Unit> {
-        return mealStatApi.deleteMealStat(id)
+        return mealStatRepository.deleteMealStat(id)
     }
 }

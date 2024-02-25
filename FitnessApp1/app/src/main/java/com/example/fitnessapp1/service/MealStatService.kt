@@ -7,8 +7,7 @@ import retrofit2.Response
 interface MealStatService {
     suspend fun createMealStat(
         request: MealStatRequest,
-        id: Long,
-        mealId: Long
+        mealId: Long?
     ): Response<MealStatResponse>
 
     suspend fun deleteMealStat(id: Long): Response<Unit>

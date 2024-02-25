@@ -7,6 +7,7 @@ import retrofit2.Response
 interface MealService {
     suspend fun create(request: MealRequest): Response<MealResponse>
     suspend fun update(request: MealRequest, id: Long): Response<MealResponse>
-//    suspend fun searchMealByName(name: String): Response<List<MealRequest>>
+    suspend fun searchMealByName(mealName: String): Response<List<MealResponse>>
+    suspend fun getMealById(id: Long?): Response<MealResponse>
     suspend fun delete(id: Long): Response<Unit>
 }

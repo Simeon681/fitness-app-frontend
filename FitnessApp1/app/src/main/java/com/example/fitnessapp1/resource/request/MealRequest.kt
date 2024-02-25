@@ -5,7 +5,5 @@ data class MealRequest(
     val calories: Int,
     val protein: Float,
     val carbs: Float,
-    val fat: Float,
-    val fiber: Float,
-    val sugar: Float
+    val fat: Float
 )

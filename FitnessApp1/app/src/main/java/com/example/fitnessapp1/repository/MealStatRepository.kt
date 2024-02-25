@@ -7,13 +7,13 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface MealStatRepository {
-    @POST("/api/v1/meal-stat/create/{id}/{mealId}")
+    @POST("/api/v1/meal-stat/create")
     suspend fun createMealStat(
         @Body request: MealStatRequest,
-        @Path("id") id: Long,
-        @Path("mealId") mealId: Long
+        @Query("mealId") mealId: Long?
     ): Response<MealStatResponse>
 
     @DELETE("/api/v1/meal-stat/{id}")
