@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.fitnessapp1.ScheduledTask
 import com.example.fitnessapp1.screen.CreateMealScreen
 import com.example.fitnessapp1.screen.ForgotPasswordScreen
 import com.example.fitnessapp1.screen.LoginScreen
@@ -100,7 +99,7 @@ fun AppNavHost(
             val activityStat by activityStatViewModel.activityStat.collectAsState()
             val steps by activityStatViewModel.steps.collectAsState()
             val water by activityStatViewModel.water.collectAsState()
-            val scheduler = ScheduledTask
+//            val scheduler = ScheduledTask
             MainScreen(
                 navController,
                 profile = profile,
@@ -116,14 +115,14 @@ fun AppNavHost(
                 }
             )
 
-            scheduler.performTask(
-                taskToRun = {
-                    activityStatViewModel.updateActivityStat(steps, 0f)
-                },
-                hour = 23,
-                minute = 59,
-                second = 59
-            )
+//            scheduler.performTask(
+//                taskToRun = {
+//                    activityStatViewModel.updateActivityStat(steps, 0f)
+//                },
+//                hour = 23,
+//                minute = 59,
+//                second = 59
+//            )
         }
         composable(NavigationItem.ForgotPassword.route) {
             ForgotPasswordScreen(navController)

@@ -1,6 +1,6 @@
 package com.example.fitnessapp1
 
-import com.example.fitnessapp1.RetrofitHost.PHONE
+import com.example.fitnessapp1.RetrofitHost.EMULATOR
 import com.example.fitnessapp1.repository.ActivityStatRepository
 import com.example.fitnessapp1.repository.AuthRepository
 import com.example.fitnessapp1.repository.MealRepository
@@ -59,7 +59,7 @@ val appModule = module {
 
         Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(PHONE)
+            .baseUrl(EMULATOR)
             .addConverterFactory(GsonConverterFactory.create(get()))
             .build()
     }
