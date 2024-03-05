@@ -3,13 +3,14 @@ package com.example.fitnessapp1.service.service_impl
 import com.example.fitnessapp1.repository.MealRepository
 import com.example.fitnessapp1.resource.request.MealRequest
 import com.example.fitnessapp1.resource.response.MealResponse
+import com.example.fitnessapp1.resource.response.TempMealResponse
 import com.example.fitnessapp1.service.MealService
 import retrofit2.Response
 
 class MealServiceImpl(
     private val mealRepository: MealRepository
 ) : MealService {
-    override suspend fun create(request: MealRequest): Response<MealResponse> {
+    override suspend fun create(request: MealRequest): Response<TempMealResponse> {
         return mealRepository.createMeal(request)
     }
 

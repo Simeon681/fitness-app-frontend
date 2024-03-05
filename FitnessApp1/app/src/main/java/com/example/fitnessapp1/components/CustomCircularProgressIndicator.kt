@@ -176,7 +176,7 @@ fun CustomCircularProgressIndicatorPreview() {
         modifier = Modifier
             .size(230f.dp)
             .background(Color.White),
-        initialValue = 50f,
+        initialValue = 1f,
         primaryColor = Color.Green,
         secondaryColor = Color.LightGray,
         maxValue = 100f,

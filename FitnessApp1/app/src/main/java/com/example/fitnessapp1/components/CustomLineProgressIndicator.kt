@@ -46,23 +46,25 @@ fun CustomLineProgressIndicator(
                 cap = StrokeCap.Round
             )
 
-            drawLine(
-                color = primaryColor,
-                start = Offset(
-                    (width - length * 2f) / 2f,
-                    height / 2f
-                ),
-                end = Offset(
-                    x = if (initialValue > maxValue) {
-                        (width - length * 2f) / 2f + length * 2f
-                    } else {
-                        width * (initialValue / maxValue)
-                    },
-                    height / 2f
-                ),
-                strokeWidth = thickness,
-                cap = StrokeCap.Round
-            )
+            if (initialValue > 0) {
+                drawLine(
+                    color = primaryColor,
+                    start = Offset(
+                        (width - length * 2f) / 2f,
+                        height / 2f
+                    ),
+                    end = Offset(
+                        x = if (initialValue >= maxValue) {
+                            (width - length * 2f) / 2f + length * 2f
+                        } else {
+                            (width - length * 2f) / 2f + length * 2f * (initialValue / maxValue)
+                        },
+                        height / 2f
+                    ),
+                    strokeWidth = thickness,
+                    cap = StrokeCap.Round
+                )
+            }
         }
     }
 }
@@ -72,12 +74,12 @@ fun CustomLineProgressIndicator(
 fun CustomLineProgressIndicatorPreview() {
     CustomLineProgressIndicator(
         modifier = Modifier
-            .size(230f.dp)
+            .size(200.dp)
             .background(Color.White),
-        initialValue = 50f,
+        initialValue = 1f,
         primaryColor = Color.Green,
         secondaryColor = Color.LightGray,
         maxValue = 100f,
-        length = 150f,
+        length = 110f,
     )
 }

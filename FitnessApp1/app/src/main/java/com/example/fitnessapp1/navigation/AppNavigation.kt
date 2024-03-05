@@ -6,7 +6,8 @@ enum class Screen {
     REGISTER,
     FORGOT_PASSWORD,
     SEARCH,
-    MEAL
+    MEAL,
+    CREATE_MEAL
 }
 sealed class NavigationItem(val route: String) {
     object Main : NavigationItem(Screen.MAIN.name)
@@ -15,4 +16,5 @@ sealed class NavigationItem(val route: String) {
     object ForgotPassword : NavigationItem(Screen.FORGOT_PASSWORD.name)
     object Search : NavigationItem(Screen.SEARCH.name)
     object Meal : NavigationItem(Screen.MEAL.name)
+    object CreateMeal : NavigationItem(Screen.CREATE_MEAL.name)
 }

@@ -7,6 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.fitnessapp1.ScheduledTask
+import com.example.fitnessapp1.screen.CreateMealScreen
 import com.example.fitnessapp1.screen.ForgotPasswordScreen
 import com.example.fitnessapp1.screen.LoginScreen
 import com.example.fitnessapp1.screen.MainScreen
@@ -32,28 +34,6 @@ fun AppNavHost(
         navController = navController,
         startDestination = startDestination
     ) {
-        composable(NavigationItem.Main.route) {
-            val profileViewModel = getViewModel<ProfileViewModel>()
-            val activityStatViewModel = getViewModel<ActivityStatViewModel>()
-            val profile by profileViewModel.profile.collectAsState()
-            val activityStat by activityStatViewModel.activityStat.collectAsState()
-            val steps by activityStatViewModel.steps.collectAsState()
-            val water by activityStatViewModel.water.collectAsState()
-            MainScreen(
-                navController,
-                profile = profile,
-                onGetProfile = { profileViewModel.getProfile() },
-                activityStat = activityStat,
-                onGetActivityStat = { activityStatViewModel.getActivityStat() },
-                steps = steps,
-                onStepsChange = { activityStatViewModel.setSteps(it) },
-                onWaterChange = { activityStatViewModel.setWater(it) },
-                updateActivityStat = {
-                    activityStatViewModel
-                        .updateActivityStat(steps, water)
-                }
-            )
-        }
         composable(NavigationItem.Login.route) {
             val loginViewModel = getViewModel<LoginViewModel>()
             val username by loginViewModel.username.collectAsState()
@@ -113,6 +93,38 @@ fun AppNavHost(
                 }
             )
         }
+        composable(NavigationItem.Main.route) {
+            val profileViewModel = getViewModel<ProfileViewModel>()
+            val activityStatViewModel = getViewModel<ActivityStatViewModel>()
+            val profile by profileViewModel.profile.collectAsState()
+            val activityStat by activityStatViewModel.activityStat.collectAsState()
+            val steps by activityStatViewModel.steps.collectAsState()
+            val water by activityStatViewModel.water.collectAsState()
+            val scheduler = ScheduledTask
+            MainScreen(
+                navController,
+                profile = profile,
+                onGetProfile = { profileViewModel.getProfile() },
+                activityStat = activityStat,
+                onGetActivityStat = { activityStatViewModel.getActivityStat() },
+                steps = steps,
+                onStepsChange = { activityStatViewModel.setSteps(it) },
+                onWaterChange = { activityStatViewModel.setWater(it) },
+                updateActivityStat = {
+                    activityStatViewModel
+                        .updateActivityStat(steps, water)
+                }
+            )
+
+            scheduler.performTask(
+                taskToRun = {
+                    activityStatViewModel.updateActivityStat(steps, 0f)
+                },
+                hour = 23,
+                minute = 59,
+                second = 59
+            )
+        }
         composable(NavigationItem.ForgotPassword.route) {
             ForgotPasswordScreen(navController)
         }
@@ -131,6 +143,36 @@ fun AppNavHost(
                 onSearchButtonClick = { mealViewModel.searchMealByName(mealName) },
                 meals = meals,
                 onMealIdChange = { mealStatViewModel.setMealId(it) }
+            )
+        }
+        composable(NavigationItem.CreateMeal.route) {
+            val mealViewModel = getViewModel<MealViewModel>()
+            val mealName by mealViewModel.mealName.collectAsState()
+            val calories by mealViewModel.calories.collectAsState()
+            val protein by mealViewModel.protein.collectAsState()
+            val carbs by mealViewModel.carbs.collectAsState()
+            val fat by mealViewModel.fat.collectAsState()
+            CreateMealScreen(
+                navController,
+                mealName = mealName,
+                onMealNameChange = { mealViewModel.setMealName(it) },
+                calories = calories,
+                onCaloriesChange = { mealViewModel.setCalories(it) },
+                protein = protein,
+                onProteinChange = { mealViewModel.setProtein(it) },
+                carbs = carbs,
+                onCarbsChange = { mealViewModel.setCarbs(it) },
+                fat = fat,
+                onFatChange = { mealViewModel.setFat(it) },
+                onButtonClick = {
+                    mealViewModel.createMeal(
+                        mealName,
+                        calories,
+                        protein,
+                        carbs,
+                        fat
+                    )
+                }
             )
         }
         composable("${NavigationItem.Meal.route}/{id}") { it ->

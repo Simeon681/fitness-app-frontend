@@ -34,4 +34,7 @@
     <string name="Liters">Liters</string>
     <string name="search">Search for a food...</string>
     <string name="meal_type">Type of meal</string>
+    <string name="create_meal">Create your meal</string>
+    <string name="meal_name">Name</string>
+    <string name="calories">Calories</string>
 </resources>

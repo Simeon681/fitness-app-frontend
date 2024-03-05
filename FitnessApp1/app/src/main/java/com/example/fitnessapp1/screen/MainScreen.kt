@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,13 +25,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.fitnessapp1.R
-import com.example.fitnessapp1.ScheduledTask
 import com.example.fitnessapp1.SharedPreferencesInstance
 import com.example.fitnessapp1.components.ActivityCard
 import com.example.fitnessapp1.components.CaloriesCard
 import com.example.fitnessapp1.components.HeadingText
 import com.example.fitnessapp1.resource.response.ActivityStatResponse
 import com.example.fitnessapp1.resource.response.ProfileResponse
+import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -48,32 +48,20 @@ fun MainScreen(
     updateActivityStat: () -> Unit
 ) {
     val sharedPreferencesInstance = SharedPreferencesInstance
-    val scheduler = ScheduledTask
 
+    CircularProgressIndicator(modifier = Modifier.padding(8.dp))
     LaunchedEffect(key1 = true) {
+        delay(300)
         onGetProfile()
+        delay(300)
         onGetActivityStat()
         onStepsChange(sharedPreferencesInstance.getSteps())
-
-        scheduler.performTask(
-            taskToRun = { sharedPreferencesInstance.saveSteps(0) },
-            hour = 0,
-            minute = 0,
-            second = 0
-        )
     }
-
-    scheduler.performTask(
-        taskToRun = { updateActivityStat() },
-        hour = 23,
-        minute = 59,
-        second = 59
-    )
 
     Surface(
         modifier = Modifier
             .fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+        color = Color.White
     ) {
         Scaffold(
         ) { innerPadding ->
@@ -127,6 +115,23 @@ fun MainScreen(
                                 fontWeight = FontWeight.Bold
                             )
                         }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        ElevatedButton(
+                            modifier = Modifier.size(200.dp, 50.dp),
+                            onClick = {
+                                navController?.navigate("create_meal")
+                            }
+                        ) {
+                            Text(
+                                text = "Create Meal",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(2.dp))
                     }
                 }
             }
@@ -143,17 +148,17 @@ fun MainScreenPreview() {
         onGetActivityStat = {},
         profile = ProfileResponse(
             1,
-            0f,
-            25f,
-            180f,
-            80.0f,
+            100f,
+            100f,
+            100f,
+            8.0f,
             0,
         ),
         activityStat = ActivityStatResponse(
             1,
             0,
             0,
-            0f,
+            50f,
             0f,
             0f,
             0f

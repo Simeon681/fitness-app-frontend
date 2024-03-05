@@ -2,6 +2,7 @@ package com.example.fitnessapp1.repository
 
 import com.example.fitnessapp1.resource.request.MealRequest
 import com.example.fitnessapp1.resource.response.MealResponse
+import com.example.fitnessapp1.resource.response.TempMealResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -13,7 +14,7 @@ import retrofit2.http.Query
 
 interface MealRepository {
     @POST("/api/v1/meal/create")
-    suspend fun createMeal(@Body request: MealRequest): Response<MealResponse>
+    suspend fun createMeal(@Body request: MealRequest): Response<TempMealResponse>
 
     @GET("/api/v1/meal/search")
     suspend fun searchMealByName(@Query("mealName") mealName: String): Response<List<MealResponse>>

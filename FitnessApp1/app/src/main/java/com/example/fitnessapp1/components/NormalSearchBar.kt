@@ -129,7 +129,9 @@ fun MealItems(
                     Row(
                         modifier = Modifier.padding(8.dp),
                     ) {
-                        Column {
+                        Column(
+                            modifier = Modifier.weight(1f, fill = true)
+                        ) {
                             Text(
                                 text = it.name,
                                 fontSize = 20.sp,
