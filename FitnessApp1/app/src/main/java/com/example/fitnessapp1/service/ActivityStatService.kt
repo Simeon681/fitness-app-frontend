@@ -7,7 +7,5 @@ import retrofit2.Response
 interface ActivityStatService {
     suspend fun create(request: ActivityStatRequest): Response<ActivityStatResponse>
     suspend fun getActivityStat(): Response<ActivityStatResponse>
-    suspend fun update(
-        request: ActivityStatRequest
-    ): Response<ActivityStatResponse>
+    suspend fun update(request: ActivityStatRequest): Response<ActivityStatResponse>
 }

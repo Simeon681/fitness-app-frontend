@@ -18,8 +18,19 @@ object SharedPreferencesInstance {
             .apply()
     }
 
-    fun getJwtToken(): String? {
-        return sharedPreferences.getString("jwt_token", null)
+    fun saveRefreshToken(token: String) {
+        sharedPreferences
+            .edit()
+            .putString("refresh_token", token)
+            .apply()
+    }
+
+    fun getJwtToken(): String {
+        return sharedPreferences.getString("jwt_token", null).toString()
+    }
+
+    fun getRefreshToken(): String {
+        return sharedPreferences.getString("refresh_token", null).toString()
     }
 
     fun saveSteps(totalSteps: Int) {
@@ -49,10 +60,11 @@ object SharedPreferencesInstance {
         return sharedPreferences.getInt("steps_${today.timeInMillis}", 0)
     }
 
-    fun clearJwtToken() {
+    fun clearTokens() {
         return sharedPreferences
             .edit()
             .remove("jwt_token")
+            .remove("refresh_token")
             .apply()
     }
 }

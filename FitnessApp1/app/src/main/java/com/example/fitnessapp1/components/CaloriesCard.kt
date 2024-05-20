@@ -54,8 +54,7 @@ fun CaloriesCard(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = if (activityStat?.calories == null) "0"
-                        else "${activityStat.calories}",
+                        text = activityStat?.calories.toString(),
                         modifier = Modifier
                             .heightIn()
                             .padding(top = 64.dp),

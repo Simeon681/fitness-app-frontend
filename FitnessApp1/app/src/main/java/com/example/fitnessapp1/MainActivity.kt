@@ -19,7 +19,6 @@ import com.example.fitnessapp1.ui.theme.FitnessApp1Theme
 class MainActivity : ComponentActivity() {
     private var sharedPreferencesInstance = SharedPreferencesInstance
     private lateinit var stepCounter: StepCounter
-//    val scheduler = ScheduledTask
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,15 +43,6 @@ class MainActivity : ComponentActivity() {
         }
 
         sharedPreferencesInstance.saveSteps(sharedPreferencesInstance.getSteps())
-
-//        scheduler.performTask(
-//            taskToRun = {
-//                sharedPreferencesInstance.saveSteps(0)
-//            },
-//            hour = 0,
-//            minute = 0,
-//            second = 0
-//        )
     }
 
     override fun onResume() {

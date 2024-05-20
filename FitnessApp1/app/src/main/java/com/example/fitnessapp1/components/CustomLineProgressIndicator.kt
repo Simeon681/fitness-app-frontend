@@ -1,17 +1,20 @@
 package com.example.fitnessapp1.components
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 
 @Composable
 fun CustomLineProgressIndicator(
@@ -22,6 +25,19 @@ fun CustomLineProgressIndicator(
     maxValue: Float,
     length: Float
 ) {
+    var animationPlayed by remember { mutableStateOf(false) }
+    var curPercentage = animateFloatAsState(
+        targetValue = if (animationPlayed) initialValue else 0f,
+        animationSpec = tween(
+            durationMillis = 1000,
+            delayMillis = 100
+        ), label = ""
+    )
+
+    LaunchedEffect(key1 = true) {
+        animationPlayed = true
+    }
+
     Box(
         modifier = modifier
     ) {
@@ -54,10 +70,10 @@ fun CustomLineProgressIndicator(
                         height / 2f
                     ),
                     end = Offset(
-                        x = if (initialValue >= maxValue) {
+                        x = if (curPercentage.value >= maxValue) {
                             (width - length * 2f) / 2f + length * 2f
                         } else {
-                            (width - length * 2f) / 2f + length * 2f * (initialValue / maxValue)
+                            (width - length * 2f) / 2f + length * 2f * (curPercentage.value / maxValue)
                         },
                         height / 2f
                     ),
@@ -67,19 +83,4 @@ fun CustomLineProgressIndicator(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun CustomLineProgressIndicatorPreview() {
-    CustomLineProgressIndicator(
-        modifier = Modifier
-            .size(200.dp)
-            .background(Color.White),
-        initialValue = 1f,
-        primaryColor = Color.Green,
-        secondaryColor = Color.LightGray,
-        maxValue = 100f,
-        length = 110f,
-    )
 }

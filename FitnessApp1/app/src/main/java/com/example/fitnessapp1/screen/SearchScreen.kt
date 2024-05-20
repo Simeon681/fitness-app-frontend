@@ -8,7 +8,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.fitnessapp1.components.MealItems
@@ -24,7 +23,7 @@ fun SearchScreen(
     onActiveChange: (Boolean) -> Unit,
     onSearchButtonClick: () -> Unit,
     meals: List<MealResponse>?,
-    onMealIdChange: (Long) -> Unit
+    onMealIdChange: (String) -> Unit
 ) {
     Surface(
         modifier = Modifier
@@ -57,19 +56,4 @@ fun SearchScreen(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun SearchScreenPreview() {
-    SearchScreen(
-        navController = null,
-        mealName = "Chicken",
-        onMealNameChange = {},
-        active = true,
-        onActiveChange = {},
-        onSearchButtonClick = {},
-        meals = listOf(),
-        onMealIdChange = {}
-    )
 }

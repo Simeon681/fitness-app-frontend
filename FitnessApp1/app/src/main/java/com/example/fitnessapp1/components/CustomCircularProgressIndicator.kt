@@ -1,7 +1,8 @@
 package com.example.fitnessapp1.components
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,12 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,7 +31,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -50,6 +50,18 @@ fun CustomCircularProgressIndicator(
     imageVector: ImageVector? = null
 ) {
     var circularCenter by remember { mutableStateOf(Offset.Zero) }
+    var animationPlayed by remember { mutableStateOf(false) }
+    var curPercentage = animateFloatAsState(
+        targetValue = if (animationPlayed) initialValue else 0.0f,
+        animationSpec = tween(
+            durationMillis = 1000,
+            delayMillis = 100
+        ), label = ""
+    )
+
+    LaunchedEffect(key1 = true) {
+        animationPlayed = true
+    }
 
     Box(
         modifier = modifier,
@@ -97,8 +109,8 @@ fun CustomCircularProgressIndicator(
             drawArc(
                 color = primaryColor,
                 startAngle = if (isCircle) -90f else 140f,
-                sweepAngle = if (initialValue < maxValue) {
-                    (if (isCircle) 360f else 260f) / maxValue * initialValue
+                sweepAngle = if (curPercentage.value < maxValue) {
+                    (if (isCircle) 360f else 260f) / maxValue * curPercentage.value
                 } else {
                     (if (isCircle) 360f else 260f) / maxValue * maxValue
                 },
@@ -132,9 +144,9 @@ fun CustomCircularProgressIndicator(
             }
 
             Text(
-                text = if (hasButton) "$initialValue"
-                    else if (!hasButton && !isCircle) "${maxValue.minus(initialValue).toInt()}"
-                    else "${initialValue.toInt()}",
+                text = if (hasButton) "${(Math.round(curPercentage.value * 100) / 100.0).toFloat()}"
+                    else if (!hasButton && !isCircle) "${maxValue.minus(curPercentage.value).toInt()}"
+                    else "${curPercentage.value.toInt()}",
                 style = TextStyle(
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold
@@ -162,28 +174,9 @@ fun CustomCircularProgressIndicator(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add button"
+                    contentDescription = null
                 )
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun CustomCircularProgressIndicatorPreview() {
-    CustomCircularProgressIndicator(
-        modifier = Modifier
-            .size(230f.dp)
-            .background(Color.White),
-        initialValue = 1f,
-        primaryColor = Color.Green,
-        secondaryColor = Color.LightGray,
-        maxValue = 100f,
-        circularRadius = 230f,
-        isCircle = false,
-        text = "Remaining",
-        hasButton = true,
-        imageVector = Icons.AutoMirrored.Filled.DirectionsWalk
-    )
 }

@@ -1,27 +1,35 @@
 package com.example.fitnessapp1
 
-import com.example.fitnessapp1.RetrofitHost.EMULATOR
-import com.example.fitnessapp1.repository.ActivityStatRepository
-import com.example.fitnessapp1.repository.AuthRepository
-import com.example.fitnessapp1.repository.MealRepository
-import com.example.fitnessapp1.repository.MealStatRepository
-import com.example.fitnessapp1.repository.ProfileRepository
+import com.example.fitnessapp1.API.ActivityStatAPI
+import com.example.fitnessapp1.API.AuthAPI
+import com.example.fitnessapp1.API.HeightChangeAPI
+import com.example.fitnessapp1.API.MealAPI
+import com.example.fitnessapp1.API.MealStatAPI
+import com.example.fitnessapp1.API.ProfileAPI
+import com.example.fitnessapp1.API.WeightChangeAPI
+import com.example.fitnessapp1.RetrofitHost.TUES
 import com.example.fitnessapp1.service.ActivityStatService
 import com.example.fitnessapp1.service.AuthService
+import com.example.fitnessapp1.service.HeightChangeService
 import com.example.fitnessapp1.service.MealService
 import com.example.fitnessapp1.service.MealStatService
 import com.example.fitnessapp1.service.ProfileService
+import com.example.fitnessapp1.service.WeightChangesService
 import com.example.fitnessapp1.service.service_impl.ActivityStatServiceImpl
 import com.example.fitnessapp1.service.service_impl.AuthServiceImpl
+import com.example.fitnessapp1.service.service_impl.HeightChangeServiceImpl
 import com.example.fitnessapp1.service.service_impl.MealServiceImpl
 import com.example.fitnessapp1.service.service_impl.MealStatServiceImpl
 import com.example.fitnessapp1.service.service_impl.ProfileServiceImpl
+import com.example.fitnessapp1.service.service_impl.WeightChangesServiceImpl
 import com.example.fitnessapp1.view_model.ActivityStatViewModel
+import com.example.fitnessapp1.view_model.HeightChangeViewModel
 import com.example.fitnessapp1.view_model.LoginViewModel
 import com.example.fitnessapp1.view_model.MealStatViewModel
 import com.example.fitnessapp1.view_model.MealViewModel
 import com.example.fitnessapp1.view_model.ProfileViewModel
 import com.example.fitnessapp1.view_model.RegisterViewModel
+import com.example.fitnessapp1.view_model.WeightChangeViewModel
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -59,29 +67,37 @@ val appModule = module {
 
         Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(EMULATOR)
+            .baseUrl(TUES)
             .addConverterFactory(GsonConverterFactory.create(get()))
             .build()
     }
 
-    single<AuthRepository> {
-        get<Retrofit>().create(AuthRepository::class.java)
+    single<AuthAPI> {
+        get<Retrofit>().create(AuthAPI::class.java)
     }
 
-    single<MealRepository> {
-        get<Retrofit>().create(MealRepository::class.java)
+    single<MealAPI> {
+        get<Retrofit>().create(MealAPI::class.java)
     }
 
-    single<MealStatRepository> {
-        get<Retrofit>().create(MealStatRepository::class.java)
+    single<MealStatAPI> {
+        get<Retrofit>().create(MealStatAPI::class.java)
     }
 
-    single<ActivityStatRepository> {
-        get<Retrofit>().create(ActivityStatRepository::class.java)
+    single<ActivityStatAPI> {
+        get<Retrofit>().create(ActivityStatAPI::class.java)
     }
 
-    single<ProfileRepository> {
-        get<Retrofit>().create(ProfileRepository::class.java)
+    single<ProfileAPI> {
+        get<Retrofit>().create(ProfileAPI::class.java)
+    }
+
+    single<HeightChangeAPI> {
+        get<Retrofit>().create(HeightChangeAPI::class.java)
+    }
+
+    single<WeightChangeAPI> {
+        get<Retrofit>().create(WeightChangeAPI::class.java)
     }
 
     single<AuthService> { AuthServiceImpl(get(), get()) }
@@ -89,6 +105,8 @@ val appModule = module {
     single<MealStatService> { MealStatServiceImpl(get()) }
     single<ActivityStatService> { ActivityStatServiceImpl(get()) }
     single<ProfileService> { ProfileServiceImpl(get()) }
+    single<HeightChangeService> { HeightChangeServiceImpl(get()) }
+    single<WeightChangesService> { WeightChangesServiceImpl(get()) }
 
     viewModel { LoginViewModel(get()) }
     viewModel { RegisterViewModel(get()) }
@@ -96,6 +114,8 @@ val appModule = module {
     viewModel { MealViewModel(get()) }
     viewModel { MealStatViewModel(get()) }
     viewModel { ActivityStatViewModel(get()) }
+    viewModel { HeightChangeViewModel(get()) }
+    viewModel { WeightChangeViewModel(get()) }
 
     factory { MainApplication() }
 }

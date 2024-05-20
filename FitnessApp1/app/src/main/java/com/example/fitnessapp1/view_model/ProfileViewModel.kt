@@ -21,14 +21,22 @@ class ProfileViewModel(
     fun getProfile() {
         viewModelScope.launch {
             _profileState.value = ProfileState.Loading
-            val response = profileService.getProfile()
-            if (response.isSuccessful) {
-                _profile.value = response.body()
-                _profileState.value = ProfileState.Success
-            } else {
-                _profileState.value = ProfileState.Error(response.message())
-                _profile.value = null
+
+            try {
+                val response = profileService.getProfile()
+                if (response.isSuccessful) {
+                    _profile.value = response.body()
+                    _profileState.value = ProfileState.Success
+                } else {
+                    _profileState.value = ProfileState.Error("Failed to get profile!")
+                }
+            } catch (e: Exception) {
+                _profileState.value = ProfileState.Error("An error occurred!")
             }
         }
+    }
+
+    fun saveState(newState: ProfileState) {
+        _profileState.value = newState
     }
 }

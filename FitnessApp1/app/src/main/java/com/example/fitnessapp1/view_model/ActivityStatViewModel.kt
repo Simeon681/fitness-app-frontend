@@ -16,32 +16,37 @@ class ActivityStatViewModel(
     private val _activityStatState = MutableStateFlow<ActivityStatState>(ActivityStatState.Empty)
     val activityStatState: StateFlow<ActivityStatState> = _activityStatState
 
-    private val _activityStat = MutableStateFlow(ActivityStatResponse(0, 0, 0, 0f, 0f, 0f, 0f))
+    private val _activityStat = MutableStateFlow(ActivityStatResponse("", 0, 0, 0f, 0f, 0f, 0f))
     val activityStat: StateFlow<ActivityStatResponse> = _activityStat
 
-    private val _steps = MutableStateFlow(null as Int?)
-    val steps: StateFlow<Int?> = _steps
+    private val _steps = MutableStateFlow(0)
+    val steps: StateFlow<Int> = _steps
 
     private val _water = MutableStateFlow(0.25f)
     val water: StateFlow<Float> = _water
 
     fun updateActivityStat(
-        steps: Int?,
+        steps: Int,
         water: Float
     ) {
         viewModelScope.launch {
             _activityStatState.value = ActivityStatState.Loading
-            val response = activityStatService.update(
-                ActivityStatRequest(
-                    steps ?: 0,
-                    water
+
+            try {
+                val response = activityStatService.update(
+                    ActivityStatRequest(
+                        steps,
+                        water
+                    )
                 )
-            )
-            if (response.isSuccessful) {
-                _activityStat.value = response.body()!!
-                _activityStatState.value = ActivityStatState.Success
-            } else {
-                _activityStatState.value = ActivityStatState.Error(response.message())
+                if (response.isSuccessful) {
+                    _activityStat.value = response.body()!!
+                    _activityStatState.value = ActivityStatState.Success
+                } else {
+                    _activityStatState.value = ActivityStatState.Error("Failed to update activity stat!")
+                }
+            } catch (e: Exception) {
+                _activityStatState.value = ActivityStatState.Error("An error occurred!")
             }
         }
     }
@@ -49,21 +54,30 @@ class ActivityStatViewModel(
     fun getActivityStat() {
         viewModelScope.launch {
             _activityStatState.value = ActivityStatState.Loading
-            val response = activityStatService.getActivityStat()
-            if (response.isSuccessful) {
-                _activityStat.value = response.body()!!
-                _activityStatState.value = ActivityStatState.Success
-            } else {
-                _activityStatState.value = ActivityStatState.Error(response.message())
+
+            try {
+                val response = activityStatService.getActivityStat()
+                if (response.isSuccessful) {
+                    _activityStat.value = response.body()!!
+                    _activityStatState.value = ActivityStatState.Success
+                } else {
+                    _activityStatState.value = ActivityStatState.Error("Failed to get activity stat!")
+                }
+            } catch (e: Exception) {
+                _activityStatState.value = ActivityStatState.Error("An error occurred!")
             }
         }
     }
 
-    fun setSteps(newSteps: Int) {
+    fun saveState(newState: ActivityStatState) {
+        _activityStatState.value = newState
+    }
+
+    fun saveSteps(newSteps: Int) {
         _steps.value = newSteps
     }
 
-    fun setWater(newWater: Float) {
+    fun saveWater(newWater: Float) {
         _water.value = newWater
     }
 }
