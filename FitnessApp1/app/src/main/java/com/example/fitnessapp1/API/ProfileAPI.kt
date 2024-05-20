@@ -1,4 +1,4 @@
-package com.example.fitnessapp1.repository
+package com.example.fitnessapp1.API
 
 import com.example.fitnessapp1.resource.request.ProfileRequest
 import com.example.fitnessapp1.resource.response.ProfileResponse
@@ -7,7 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 
-interface ProfileRepository {
+interface ProfileAPI {
     @PATCH("/api/v1/profile")
     suspend fun updateProfile(@Body request: ProfileRequest): Response<ProfileResponse>
 

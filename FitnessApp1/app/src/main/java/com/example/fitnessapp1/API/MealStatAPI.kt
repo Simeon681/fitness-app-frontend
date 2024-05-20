@@ -1,4 +1,4 @@
-package com.example.fitnessapp1.repository
+package com.example.fitnessapp1.API
 
 import com.example.fitnessapp1.resource.request.MealStatRequest
 import com.example.fitnessapp1.resource.response.MealStatResponse
@@ -9,13 +9,13 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface MealStatRepository {
+interface MealStatAPI {
     @POST("/api/v1/meal-stat/create")
     suspend fun createMealStat(
         @Body request: MealStatRequest,
-        @Query("mealId") mealId: Long?
+        @Query("mealId") mealId: String
     ): Response<MealStatResponse>
 
     @DELETE("/api/v1/meal-stat/{id}")
-    suspend fun deleteMealStat(@Path("id") id: Long): Response<Unit>
+    suspend fun deleteMealStat(@Path("id") id: String): Response<Unit>
 }

@@ -1,4 +1,4 @@
-package com.example.fitnessapp1.repository
+package com.example.fitnessapp1.API
 
 import com.example.fitnessapp1.resource.request.ActivityStatRequest
 import com.example.fitnessapp1.resource.response.ActivityStatResponse
@@ -8,7 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 
-interface ActivityStatRepository {
+interface ActivityStatAPI {
     @POST("/api/v1/activity-stat/create")
     suspend fun createActivityStat(
         @Body request: ActivityStatRequest

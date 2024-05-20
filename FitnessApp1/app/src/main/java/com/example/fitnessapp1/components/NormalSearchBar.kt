@@ -115,7 +115,7 @@ fun NormalSearchBar(
 fun MealItems(
     active: Boolean,
     meals: List<MealResponse>?,
-    onMealIdChange: (Long) -> Unit,
+    onMealIdChange: (String) -> Unit,
     onClick: (Any?) -> Unit
 ) {
     if (meals != null) {

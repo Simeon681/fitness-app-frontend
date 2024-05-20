@@ -19,17 +19,17 @@ class MealViewModel(
     private val _mealName = MutableStateFlow("")
     val mealName: StateFlow<String> = _mealName
 
-    private val _calories = MutableStateFlow(null as Int?)
-    val calories: StateFlow<Int?> = _calories
+    private val _calories = MutableStateFlow(0)
+    val calories: StateFlow<Int> = _calories
 
-    private val _protein = MutableStateFlow(null as Float?)
-    val protein: StateFlow<Float?> = _protein
+    private val _protein = MutableStateFlow(0.0f)
+    val protein: StateFlow<Float> = _protein
 
-    private val _carbs = MutableStateFlow(null as Float?)
-    val carbs: StateFlow<Float?> = _carbs
+    private val _carbs = MutableStateFlow(0.0f)
+    val carbs: StateFlow<Float> = _carbs
 
-    private val _fat = MutableStateFlow(null as Float?)
-    val fat: StateFlow<Float?> = _fat
+    private val _fat = MutableStateFlow(0.0f)
+    val fat: StateFlow<Float> = _fat
 
     private val _meals = MutableStateFlow(null as List<MealResponse>?)
     val meals: StateFlow<List<MealResponse>?> = _meals
@@ -39,26 +39,31 @@ class MealViewModel(
 
     fun createMeal(
         mealName: String,
-        calories: Int?,
-        protein: Float?,
-        carbs: Float?,
-        fat: Float?
+        calories: Int,
+        protein: Float,
+        carbs: Float,
+        fat: Float
     ) {
         viewModelScope.launch {
             _mealsState.value = MealState.Loading
-            val response = mealService.create(
-                MealRequest(
-                    mealName,
-                    calories,
-                    protein,
-                    carbs,
-                    fat
+
+            try {
+                val response = mealService.create(
+                    MealRequest(
+                        mealName,
+                        calories,
+                        protein,
+                        carbs,
+                        fat
+                    )
                 )
-            )
-            if (response.isSuccessful) {
-                _mealsState.value = MealState.Success
-            } else {
-                _mealsState.value = MealState.Error(response.message())
+                if (response.isSuccessful) {
+                    _mealsState.value = MealState.Success
+                } else {
+                    _mealsState.value = MealState.Error("Failed to create meal!")
+                }
+            } catch (e: Exception) {
+                _mealsState.value = MealState.Error("An error occurred!")
             }
         }
     }
@@ -68,50 +73,62 @@ class MealViewModel(
     ) {
         viewModelScope.launch {
             _mealsState.value = MealState.Loading
-            val response = mealService.searchMealByName(mealName)
-            if (response.isSuccessful) {
-                _meals.value = response.body()
-                _mealsState.value = MealState.Success
-            } else {
-                _mealsState.value = MealState.Error(response.message())
-                _meals.value = null
+
+            try {
+                val response = mealService.searchMealByName(mealName)
+                if (response.isSuccessful) {
+                    _meals.value = response.body()
+                    _mealsState.value = MealState.Success
+                } else {
+                    _mealsState.value = MealState.Error("Failed to search for meals!")
+                }
+            } catch (e: Exception) {
+                _mealsState.value = MealState.Error("An error occurred!")
             }
         }
     }
 
     fun getMealById(
-        mealId: Long?
+        mealId: String?
     ) {
         viewModelScope.launch {
             _mealsState.value = MealState.Loading
-            val response = mealService.getMealById(mealId)
-            if (response.isSuccessful) {
-                _meal.value = response.body()
-                _mealsState.value = MealState.Success
-            } else {
-                _mealsState.value = MealState.Error(response.message())
-                _meal.value = null
+
+            try {
+                val response = mealService.getMealById(mealId)
+                if (response.isSuccessful) {
+                    _meal.value = response.body()
+                    _mealsState.value = MealState.Success
+                } else {
+                    _mealsState.value = MealState.Error("Failed to get meal!")
+                }
+            } catch (e: Exception) {
+                _mealsState.value = MealState.Error("An error occurred!")
             }
         }
     }
 
-    fun setMealName(newMealName: String) {
+    fun saveState(newMealState: MealState) {
+        _mealsState.value = newMealState
+    }
+
+    fun saveMealName(newMealName: String) {
         _mealName.value = newMealName
     }
 
-    fun setCalories(newCalories: Int) {
+    fun saveCalories(newCalories: Int) {
         _calories.value = newCalories
     }
 
-    fun setProtein(newProtein: Float) {
+    fun saveProtein(newProtein: Float) {
         _protein.value = newProtein
     }
 
-    fun setCarbs(newCarbs: Float) {
+    fun saveCarbs(newCarbs: Float) {
         _carbs.value = newCarbs
     }
 
-    fun setFat(newFat: Float) {
+    fun saveFat(newFat: Float) {
         _fat.value = newFat
     }
 }

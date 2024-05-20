@@ -8,4 +8,6 @@ import retrofit2.Response
 interface AuthService {
     suspend fun register(request: RegisterUserRequest): Response<AuthResponse>
     suspend fun login(request: AuthRequest): Response<AuthResponse>
+    suspend fun autoLogin(): Response<Unit>
+    suspend fun logout(): Response<Unit>
 }

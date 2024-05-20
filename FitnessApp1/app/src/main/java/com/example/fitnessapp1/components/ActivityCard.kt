@@ -24,7 +24,7 @@ import com.example.fitnessapp1.resource.response.ProfileResponse
 
 @Composable
 fun ActivityCard(
-    steps: Int?,
+    steps: Int,
     profile: ProfileResponse?,
     activityStat: ActivityStatResponse,
     onWaterChange: (Float) -> Unit,
@@ -50,7 +50,7 @@ fun ActivityCard(
                 CustomCircularProgressIndicator(
                     modifier = Modifier
                         .size(160.dp),
-                    initialValue = steps?.toFloat() ?: 0f,
+                    initialValue = steps.toFloat(),
                     primaryColor = Color.Green,
                     secondaryColor = Color.LightGray,
                     maxValue = profile?.goalSteps?.toFloat() ?: 100f,
@@ -81,3 +81,4 @@ fun ActivityCard(
         }
     }
 }
+

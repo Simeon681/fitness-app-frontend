@@ -9,11 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.fitnessapp1.R
 import com.example.fitnessapp1.theme.TextColor
 
 @Composable
@@ -45,10 +42,4 @@ fun DividerText(value: String) {
             thickness = 1.dp
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DividerTextPreview() {
-    DividerText(value = stringResource(id = R.string.or))
 }

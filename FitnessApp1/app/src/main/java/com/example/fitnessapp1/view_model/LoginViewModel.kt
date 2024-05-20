@@ -15,26 +15,69 @@ class LoginViewModel(
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Empty)
     val loginState:StateFlow<LoginState> = _loginState
 
-    private val _username = MutableStateFlow("")
-    val username: StateFlow<String> = _username
+    private val _email = MutableStateFlow("")
+    val email: StateFlow<String> = _email
 
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password
 
-    fun login(username: String, password: String) {
+    fun login(email: String, password: String) {
         viewModelScope.launch {
             _loginState.value = LoginState.Loading
-            val response = authService.login(AuthRequest(username, password))
-            if (response.isSuccessful) {
-                _loginState.value = LoginState.Success
-            } else {
-                _loginState.value = LoginState.Error(response.message())
+
+            try {
+                val response = authService.login(AuthRequest(email, password))
+                if (response.isSuccessful) {
+                    _loginState.value = LoginState.Success
+                } else {
+                    _loginState.value = LoginState.Error("Log In failed!")
+                }
+            } catch (e: Exception) {
+                _loginState.value = LoginState.Error("An error occurred!")
             }
         }
     }
 
-    fun saveUsername(newUsername: String) {
-        _username.value = newUsername
+    fun autoLogin() {
+        viewModelScope.launch {
+            _loginState.value = LoginState.Loading
+
+            try {
+                val response = authService.autoLogin()
+                if (response.isSuccessful) {
+                    _loginState.value = LoginState.Success
+                } else {
+                    _loginState.value = LoginState.Error("Auto Log In failed!")
+                }
+            } catch (e: Exception) {
+                _loginState.value = LoginState.Error("An error occurred!")
+            }
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            _loginState.value = LoginState.Loading
+
+            try {
+                val response = authService.logout()
+                if (response.isSuccessful) {
+                    _loginState.value = LoginState.Success
+                } else {
+                    _loginState.value = LoginState.Error("Log Out failed!")
+                }
+            } catch (e: Exception) {
+                _loginState.value = LoginState.Error("An error occurred!")
+            }
+        }
+    }
+
+    fun saveState(newState: LoginState) {
+        _loginState.value = newState
+    }
+
+    fun saveEmail(newEmail: String) {
+        _email.value = newEmail
     }
 
     fun savePassword(newPassword: String) {

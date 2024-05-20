@@ -1,27 +1,27 @@
 package com.example.fitnessapp1.service.service_impl
 
-import com.example.fitnessapp1.repository.ActivityStatRepository
+import com.example.fitnessapp1.API.ActivityStatAPI
 import com.example.fitnessapp1.resource.request.ActivityStatRequest
 import com.example.fitnessapp1.resource.response.ActivityStatResponse
 import com.example.fitnessapp1.service.ActivityStatService
 import retrofit2.Response
 
 class ActivityStatServiceImpl(
-    private val activityStatRepository: ActivityStatRepository
+    private val activityStatAPI: ActivityStatAPI
 ) : ActivityStatService {
     override suspend fun create(
         request: ActivityStatRequest,
     ): Response<ActivityStatResponse> {
-        return activityStatRepository.createActivityStat(request)
+        return activityStatAPI.createActivityStat(request)
     }
 
     override suspend fun getActivityStat(): Response<ActivityStatResponse> {
-        return activityStatRepository.getActivityStat()
+        return activityStatAPI.getActivityStat()
     }
 
     override suspend fun update(
         request: ActivityStatRequest
     ): Response<ActivityStatResponse> {
-        return activityStatRepository.updateActivityStat(request)
+        return activityStatAPI.updateActivityStat(request)
     }
 }
